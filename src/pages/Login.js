@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useLoginMutation } from '../features/auth/authApi';
 
 const Login = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+   
     return (
         <div className='container mx-auto h-screen'>
             <div className='min-h-full flex items-center justify-center'>
@@ -20,10 +25,11 @@ const Login = () => {
                                     required
                                     className='w-full p-4 border-2'
                                     placeholder="Email address"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
                             <div className='mt-4'>
-                                
                                 <input
                                     id="password"
                                     name="password"
@@ -32,6 +38,25 @@ const Login = () => {
                                     autoComplete="current-password"
                                     required
                                     placeholder="Password"
+                                    value={password}
+                                    onChange={(e) =>
+                                        setPassword(e.target.value)
+                                    }
+                                />
+                            </div>
+                            <div className='mt-4'>
+                                <input
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    className='w-full p-4 border-2'
+                                    autoComplete="current-password"
+                                    required
+                                    placeholder="Password"
+                                    value={confirmPassword}
+                                    onChange={(e) =>
+                                        setConfirmPassword(e.target.value)
+                                    }
                                 />
                             </div>
                         </div>
