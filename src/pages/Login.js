@@ -1,18 +1,40 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useLoginMutation } from '../features/auth/authApi';
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+
+    const [login, { data, isLoading, error: responseError }] =
+        useLoginMutation();
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (responseError?.data) {
+            console.log(responseError.data)
+        }
+        if (data?.accessToken && data?.user) {
+            navigate("/home");
+        }
+    }, [data, responseError, navigate]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        login({
+            email,
+            password,
+        });
+    };
    
     return (
         <div className='container mx-auto h-screen'>
             <div className='min-h-full flex items-center justify-center'>
                 <div class="p-6 w-full max-w-2xl mx-auto bg-white rounded-xl shadow-lg flex items-center space-x-4">
 
-                    <form className="mt-8 space-y-6 w-full" action="#" method="POST">
+                    <form className="mt-8 space-y-6 w-full" onSubmit={handleSubmit}>
                         <h2>Login</h2>
                         <div className="shadow-sm">
                             <div>
@@ -41,21 +63,6 @@ const Login = () => {
                                     value={password}
                                     onChange={(e) =>
                                         setPassword(e.target.value)
-                                    }
-                                />
-                            </div>
-                            <div className='mt-4'>
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    className='w-full p-4 border-2'
-                                    autoComplete="current-password"
-                                    required
-                                    placeholder="Password"
-                                    value={confirmPassword}
-                                    onChange={(e) =>
-                                        setConfirmPassword(e.target.value)
                                     }
                                 />
                             </div>
